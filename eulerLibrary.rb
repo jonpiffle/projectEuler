@@ -9,6 +9,7 @@
     end 
 
     def prime?
+      return false if self == 1
       root = Math.sqrt(self).floor
         (2..root).each do |i| 
           if(self%i == 0)
@@ -33,6 +34,7 @@
       end
       p
     end
+  
   end
 
 module Euler
@@ -59,6 +61,10 @@ module Euler
       running.clear
     end 
     return total.keys.inject(1) { |product, key| product*(key**total[key])}
+  end
+
+  def rotate(i)
+      (i.to_s[1..-1] + i.to_s[0..0])
   end
 
 end
