@@ -1,8 +1,11 @@
 require 'mathn'
 
-SQUARE_MAX = 7100
-CUBE_MAX = 370
-FOURTH_MAX = 84
+MAX = 50000000
+MIN = 28
+
+SQUARE_MAX = 7200
+CUBE_MAX = 390
+FOURTH_MAX = 94
 
 def generate_primes(n)
   primes = Array.new
@@ -17,27 +20,30 @@ def generate_primes(n)
   return primes
 end
 
-squares = generate_primes(SQUARE_MAX)
-square_hash = Hash.new
-squares.each do |s|
-  square_hash[s] = s 
-end
-
-cubes = generate_primes(CUBE_MAX)
-fours = generate_primes(FOURTH_MAX)
-
-count = 0
-for current_num in 28..50000000
-  i=0
-  while(current_num>fours[i]**4)
-    j=0
-    while(current_num>(fours[i]**4+cubes[j]**3))
-      if (square_hash[(Math.sqrt(current_num - fours[i]**4- cubes[j]**3))])
-         count+=1
-      end
-      j+=1
-    end
-    i+=1
+def square_cube_four(h,a,b,c)
+  ans = a**4+b**3+c**2
+  if ans<=MAX
+   h[ans] = ans
   end
 end
-puts count
+
+primes = generate_primes(SQUARE_MAX)
+#primes = generate_primes(CUBE_MAX)
+#primes = generate_primes(FOURTH_MAX)
+
+h = Hash.new
+f=0
+while MAX >= primes[f]**4 
+  i=0
+  while  MAX >= (primes[f]**4 + primes[i]**3) 
+    j=0
+    while  MAX >= (primes[f]**4+primes[i]**3+primes[j]**2)
+      h[primes[f]**4+primes[i]**3+primes[j]**2] = primes[f]**4+primes[i]**3+primes[j]**2
+      j+=1
+    end
+   i+=1
+  end
+f+=1
+end
+
+puts h.length
